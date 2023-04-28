@@ -1,0 +1,82 @@
+--- # -------------------------------------------------------------------------------------------------------------------------
+# Created by Atakan Çetinkaya | 24.04.2023 | This is the finished product YAML File! |
+# Version: v0.1
+# This YAML creates a ConfigMap (cm), Service (svc), Deployment (deploy) and a Pod.
+# It is creating all important Components to access the ML Tool's.
+# Last Edited Date/Time: 24.04.2023/10:22:59
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  default.conf: |
+    server {
+      listen 80;
+      server_name localhost;
+      location / {
+        proxy_pass http://pytorch-service:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pytorch-service
+spec:
+  selector:
+    app: pytorch
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pytorch-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pytorch
+  template:
+    metadata:
+      labels:
+        app: pytorch
+    spec:
+      containers:
+        - name: pytorch
+          image: pytorch/pytorch:latest
+          command: ["python"]
+          args: ["-m", "http.server", "8080"]
+  strategy:
+    type: Recreate
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pytorch-nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+    - name: pytorch
+      image: pytorch/pytorch:latest
+      command: ["python"]
+      args: ["-c", "import torch; import time; time.sleep(3600);"]
+  volumes:
+    - name: nginx-config
+      configMap:
+        name: nginx-config
+        items:
+          - key: default.conf
+            path: default.conf

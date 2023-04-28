@@ -1,0 +1,59 @@
+#test file
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webserver
+  template:
+    metadata:
+      labels:
+        app: webserver
+    spec:
+      containers:
+        - name: webserver
+          image: pytorch/pytorch
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: kubeflow.org/v1alpha1
+kind: Kubeflow
+metadata:
+  name: kubeflow
+spec:
+  applications:
+    - kustomizeConfig:
+        repoRef:
+          name: manifests
+          path: apps/istio
+      name: istio
+      version: v1.4.3
+    - kustomizeConfig:
+        repoRef:
+          name: manifests
+          path: common/cert-manager/cert-manager-crds
+      name: cert-manager-crds
+      version: v0.12.0
+    - kustomizeConfig:
+        repoRef:
+          name: manifests
+          path: common/cert-manager/cert-manager-kube-system
+      name: cert-manager-kube-system
+      version: v0.12.0
+    - kustomizeConfig:
+        repoRef:
+          name: manifests
+          path: common/istio-lean
+      name: istio-lean
+      version: v1.4.3
+    - kustomizeConfig:
+        repoRef:
+          name: manifests
+          path: common/knative
+      name: knative
+      version: v0.9.0

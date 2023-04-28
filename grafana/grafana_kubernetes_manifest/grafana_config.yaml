@@ -1,0 +1,37 @@
+# =======================================================================================================================================
+# Project:     IPA | L-DHP (Lightweight-Data Hub Plattform)
+# Pass-ID:     X9448776
+# Author:      Atakan Çetinkaya
+# Created:     27.04.2023
+# Description: This .YAML (grafana_config.yaml) File is explaining how to Deploy the Grafana ConfigMap on the K8s-Cluster
+# File Name:   grafana_config.yaml
+# Version: -
+# v0.1 | Last Edit: 27.04.2023/09:52:15
+# v0.2 | Last Edit: 27.04.2023/09:55:56
+# =======================================================================================================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: grafana
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: grafana
+data:
+  prometheus.yaml: |-
+    {
+        "apiVersion": 1,
+        "datasources": [
+            {
+               "access":"proxy",
+                "editable": true,
+                "name": "prometheus",
+                "orgId": 1,
+                "type": "prometheus",
+                "url": "http://prometheus-service.monitoring.svc:8080",
+                "version": 1
+            }
+        ]
+    }

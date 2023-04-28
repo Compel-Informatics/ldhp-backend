@@ -1,0 +1,64 @@
+# =======================================================================================================================================
+# Project:     IPA | L-DHP (Lightweight-Data Hub Plattform)
+# Pass-ID:     X9448776
+# Author:      Atakan Çetinkaya
+# Created:     24.04.2023
+# Description: This .YAML (jupyter_notebook.yaml) File is installing the the necessary configs for the Jupyter-Notebook
+# File Name:   jupyter_notebook.yaml
+# Version: -
+# v0.1 | Last Edit: 24.04.2023/11:47:29
+# v0.2 | Last Edit: 24.04.2023/10:30:50
+# v0.3 | Last Edit: 26.04.2023/16:14:30
+# v0.4 | Last Edit: 27.04.2023/09:25:54
+# v0.5 | Last Edit: 27.04.2023/09:39:39
+# =======================================================================================================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jupyter
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: jupyter
+data:
+  default.conf: |
+    server {
+      listen 8081;
+      server_name localhost;
+      location / {
+        proxy_pass http://localhost:8888;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+    }
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jupyter-nginx
+  namespace: jupyter
+spec:
+  containers:
+    - name: jupyter
+      image: tensorflow/tensorflow:latest-gpu-jupyter
+      ports:
+        - containerPort: 8081
+      command: ["jupyter", "notebook", "--ip=0.0.0.0", "--allow-root"]
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 8081
+      volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+  volumes:
+    - name: nginx-config
+      configMap:
+        name: nginx-config
+        items:
+          - key: default.conf
+            path: default.conf

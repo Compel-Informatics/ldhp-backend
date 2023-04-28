@@ -1,0 +1,76 @@
+# =======================================================================================================================================
+# Project:     IPA | L-DHP (Lightweight-Data Hub Plattform)
+# Pass-ID:     X9448776
+# Author:      Atakan Çetinkaya
+# Created:     24.04.2023
+# Description: This .TXT (install_kubeadm.txt) File is explaining how to install the kubeadm "on" all Nodes
+# File Name:   install_kubeadm.txt
+# Version: -
+# v0.1 | Last Edit: 24.04.2023/09:27:15
+# v0.2 | Last Edit: 24.04.2023/10:06:45
+# v0.3 | Last Edit: 24.04.2023/10:28:39
+# v0.4 | Last Edit: 24.04.2023/13:07:03
+# =======================================================================================================================================
+-----------------------------------------------------------------------------------------------------------------------------------------
+1.0) These settings are required when setting up a Kubernetes cluster, they allow pods to communicate with each other over the network.
+
+NOTE: Execute command - “ON ALL NODES”
+
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+-----------------------------------------------------------------------------------------------------------------------------------------
+2.0) This command is applying any changes made to the kernel parameters in the configuration files on the system-wide level.
+
+NOTE: Execute command - “ON ALL NODES”
+
+sudo sysctl --system
+-----------------------------------------------------------------------------------------------------------------------------------------
+3.0) This command updates the package lists and installs "apt-transport-https" and "curl", which are required for downloading and installing
+     software on Ubuntu and other Debian-based systems.
+
+NOTE: Execute command - “ON ALL NODES”
+
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+-----------------------------------------------------------------------------------------------------------------------------------------
+4.0) This command downloads the Google Cloud public key for "apt-secure" and adds it to the list of trusted keys on the system, which is 
+     necessary to install software packages from the Google Cloud repositories using.
+
+NOTE: Execute command - “ON ALL NODES”
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+-----------------------------------------------------------------------------------------------------------------------------------------
+5.0) This command creates a new file named Kubernetes. list in the "/etc/apt/sources.list.d/" directory and adds a new package repository 
+     entry for Kubernetes to the file, which is necessary for installing Kubernetes packages using "apt-get".
+
+NOTE: Execute command - “ON ALL NODES”
+
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+-----------------------------------------------------------------------------------------------------------------------------------------
+6.0) "sudo apt-get update" is an important step to ensure that your Ubuntu or Debian-based system is up-to-date and has access to the latest
+      available software packages.
+
+NOTE: Execute command - “ON ALL NODES”
+
+sudo apt-get update
+-----------------------------------------------------------------------------------------------------------------------------------------
+7.0) The command "sudo apt-get install -y kubelet kubeadm kubectl" is used to install the Kubernetes components kubelet, kubeadm, and kubectl
+     on a Debian or Ubuntu Linux system.
+
+NOTE: Execute command - “ON ALL NODES” | This command installs the latest Versions of the components
+
+sudo apt-get install -y kubelet kubeadm kubectl
+-----------------------------------------------------------------------------------------------------------------------------------------
+8.0*) The "sudo apt-mark hold/unhold kubelet kubeadm kubectl" command is used to either "hold" or "unhold" the specified packages in the 
+      Debian/Ubuntu package management system. When a package is "held" it means that the package will not be automatically upgraded to a 
+      newer version when the system is updated using the "apt-get upgrade" command.
+
+NOTE: Execute command - “MASTER NODE”
+
+sudo apt-mark hold kubelet kubeadm kubectl
+
+sudo apt-mark unhold kubelet kubeadm kubectl
+-----------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,77 @@
+# =======================================================================================================================================
+# Project:     IPA | L-DHP (Lightweight-Data Hub Plattform)
+# Pass-ID:     X9448776
+# Author:      Atakan Çetinkaya
+# Created:     26.04.2023
+# Description: This .TXT (argocd_setup.txt) File is explaining how to install the kubeadm "on" all Nodes
+# File Name:   argocd_setup.txt
+# Version: -
+# v0.1 | Last Edit: 26.04.2023/15:13:53
+# v0.2 | Last Edit: 26.04.2023/15:47:44
+# v0.3 | Last Edit: 26.04.2023/18:49:45
+# v0.4 | Last Edit: 27.04.2023/09:14:13
+# =======================================================================================================================================
+-----------------------------------------------------------------------------------------------------------------------------------------
+1.0) The File "install.yaml" has the manifest data to install the ArgoCD, a known Open-Source-Continuous-Delivery-Tool for Kubernetes:
+
+NOTE: Execute command - “MASTER NODE”
+
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+-----------------------------------------------------------------------------------------------------------------------------------------
+2.0) This File "core-install.yaml has all core components for the ArgoCD, a known GitOps Continuous Delivery Tool for Kubernetes:
+
+NOTE: Execute command - “MASTER NODE”
+
+kubectl apply -n argod -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/core-install.yaml
+-----------------------------------------------------------------------------------------------------------------------------------------
+3.0) The "Linuxbrew" is a packet manager for Linux, it gives users the option, to install sourcecodes and to manage them with ease:
+
+NOTE: Execute command - “MASTER NODE”
+
+sudo apt install linuxbrew-wrapper
+-----------------------------------------------------------------------------------------------------------------------------------------
+4.0) All of the steps above lead to patching the "argocd-server" service, now you have to execute the command down below:
+
+NOTE: Execute command - “MASTER NODE”
+
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+-----------------------------------------------------------------------------------------------------------------------------------------
+5.0) Now you have to use the "port-forward" to expose that pod so you can access the ArgoCD Dashboard from the localhost:
+
+kubectl port-forward svc/argocd-server -n argocd 8080:80
+---
+5.1) And at the same time you have to do a tunneling from your Client to the GCP - VM to access the localhost on the K8s Cluster:
+
+ssh -L 8080:localhost:8080 34.65.141.240 
+-----------------------------------------------------------------------------------------------------------------------------------------
+6.0) Before deleting the "argocd-initial-admin-secret" in the "ns" argocd you have get the access token with the following command:
+
+NOTE: Execute command - “MASTER NODE”
+
+6.1) This command is encoding the Secret fully:
+
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d
+
+VALUE1: YbNFqDUpz4QtfVZC
+
+6.2) This command is not encoding the Secret fully:
+
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64
+
+VALUE2: V1dKT1JuRkVWWEI2TkZGMFpsWmFRdz09
+---
+6.3) Now you have to access through the URL "localhost:8080" the Dashboard from ArgoCD itself, insert into the URL the following line:
+
+localhost:8080
+---
+6.4) Now you should see the ArgoCD Dashboard, if that's the case, you have insert at the two blank boxes the following values:
+
+Username: admin
+Password: x7nn4GjkjV449K2 ------> or the "Token" which you get after step "6.0/VALUE1/VALUE2" the secret to access the ArgoCD Dashboard
+-----------------------------------------------------------------------------------------------------------------------------------------
+7.0) Now you have to delete the created "argocd-initial-admin-secret" secret in the namespace "argocd" with the following command:
+
+NOTE: Execute command - “MASTER NODE”
+
+kubectl delete secret argocd-initial-admin-secret -n argocd
+-----------------------------------------------------------------------------------------------------------------------------------------
