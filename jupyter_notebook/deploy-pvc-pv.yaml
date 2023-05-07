@@ -1,0 +1,149 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: notebook-pvc
+  namespace: mlservices
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: notebook-pv
+  namespace: mlservices
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tensorflow
+  namespace: mlservices
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tensorflow
+  template:
+    metadata:
+      labels:
+        app: tensorflow
+    spec:
+      containers:
+        - name: tensorflow
+          image: tensorflow/tensorflow:latest-gpu
+          ports:
+            - containerPort: 8888
+          volumeMounts:
+            - name: notebook-data
+              mountPath: /notebooks
+      volumes:
+        - name: notebook-data
+          persistentVolumeClaim:
+            claimName: notebook-pvc
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keras
+  namespace: mlservices
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keras
+  template:
+    metadata:
+      labels:
+        app: keras
+    spec:
+      containers:
+        - name: keras
+          image: tensorflow/tensorflow:latest-gpu
+          ports:
+            - containerPort: 8888
+          volumeMounts:
+            - name: notebook-data
+              mountPath: /notebooks
+      volumes:
+        - name: notebook-data
+          persistentVolumeClaim:
+            claimName: notebook-pvc
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pytorch
+  namespace: mlservices
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pytorch
+  template:
+    metadata:
+      labels:
+        app: pytorch
+    spec:
+      containers:
+        - name: pytorch
+          image: pytorch/pytorch:latest
+          ports:
+            - containerPort: 8888
+          volumeMounts:
+            - name: notebook-data
+              mountPath: /notebooks
+      volumes:
+        - name: notebook-data
+          persistentVolumeClaim:
+            claimName: notebook-pvc
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scikit-learn
+  namespace: mlservices
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scikit-learn
+  template:
+    metadata:
+      labels:
+        app: scikit-learn
+    spec:
+      containers:
+        - name: scikit-learn
+          image: continuumio/anaconda3:latest
+          ports:
+            - containerPort: 8888
+          volumeMounts:
+            - name: notebook-data
+              mountPath: /notebooks
+      volumes:
+        - name: notebook-data
+          persistentVolumeClaim:
+            claimName: notebook-pvc

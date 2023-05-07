@@ -1,0 +1,67 @@
+# =======================================================================================================================================
+# Project:     IPA | L-DHP (Lightweight-Data Hub Plattform)
+# Pass-ID:     X9448776
+# Author:      Atakan Çetinkaya
+# Created:     04.05.2023
+# Description: This .YAML (scikit_learn.yaml) File is explaining how to create and set-up the Scikit-Learn on K8s-Cluster
+# File Name:   scikit_learn.yaml
+# Version: v1.0
+# =======================================================================================================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: scikit-learn
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scikit-learn
+  namespace: scikit-learn
+spec:
+  selector:
+    matchLabels:
+      app: scikit-learn
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: scikit-learn
+    spec:
+      containers:
+        - name: scikit-learn
+          image: scikit-learn/scikitlearn:latest
+          ports:
+            - containerPort: 80
+            - containerPort: 9013
+          env:
+            - name: KBC_DATADIR
+              value: /data
+            - name: KBC_RUNID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: scikit-learn
+  namespace: scikit-learn
+spec:
+  selector:
+    app: scikit-learn
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: dashboard
+      protocol: TCP
+      port: 9013
+      targetPort: 9013
+  type: ClusterIP

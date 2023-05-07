@@ -2,26 +2,21 @@
 # Project:     IPA | L-DHP (Lightweight-Data Hub Plattform)
 # Pass-ID:     X9448776
 # Author:      Atakan Çetinkaya
-# Created:     24.04.2023
+# Created:     01.05.2023
 # Description: This .YAML (jupyter_notebook.yaml) File is installing the the necessary configs for the Jupyter-Notebook
 # File Name:   jupyter_notebook.yaml
-# Version: -
-# v0.1 | Last Edit: 24.04.2023/11:47:29
-# v0.2 | Last Edit: 24.04.2023/10:30:50
-# v0.3 | Last Edit: 26.04.2023/16:14:30
-# v0.4 | Last Edit: 27.04.2023/09:25:54
-# v0.5 | Last Edit: 27.04.2023/09:39:39
+# Version: v1.0
 # =======================================================================================================================================
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: jupyter
+  name: ml-services
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-config
-  namespace: jupyter
+  namespace: ml-services
 data:
   default.conf: |
     server {
@@ -39,7 +34,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: jupyter-nginx
-  namespace: jupyter
+  namespace: ml-services
 spec:
   containers:
     - name: jupyter

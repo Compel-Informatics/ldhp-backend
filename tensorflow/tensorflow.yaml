@@ -1,0 +1,67 @@
+# =======================================================================================================================================
+# Project:     IPA | L-DHP (Lightweight-Data Hub Plattform)
+# Pass-ID:     X9448776
+# Author:      Atakan Çetinkaya
+# Created:     04.05.2023
+# Description: This .YAML (tensorflow.yaml) File is explaining how to create and set-up the Tensorflow on K8s-Cluster
+# File Name:   tensorflow.yaml
+# Version: v1.0
+# =======================================================================================================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tensorflow
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tensorflow
+  namespace: tensorflow
+spec:
+  selector:
+    matchLabels:
+      app: tensorflow
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tensorflow
+    spec:
+      containers:
+        - name: tensorflow
+          image: tensorflow/tensorflow:latest
+          ports:
+            - containerPort: 80
+            - containerPort: 9015
+          env:
+            - name: KBC_DATADIR
+              value: /data
+            - name: KBC_RUNID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tensorflow
+  namespace: tensorflow
+spec:
+  selector:
+    app: tensorflow
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: dashboard
+      protocol: TCP
+      port: 9015
+      targetPort: 9015
+  type: ClusterIP

@@ -1,0 +1,67 @@
+# =======================================================================================================================================
+# Project:     IPA | L-DHP (Lightweight-Data Hub Plattform)
+# Pass-ID:     X9448776
+# Author:      Atakan Çetinkaya
+# Created:     04.05.2023
+# Description: This .YAML (keboola.yaml) File is explaining how to setup the Keras on K8s-Cluster
+# File Name:   keboola.yaml
+# Version: v1.0
+# =======================================================================================================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: keras
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keras
+  namespace: keras
+spec:
+  selector:
+    matchLabels:
+      app: keras
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: keras
+    spec:
+      containers:
+        - name: keras
+          image: keras/keras:latest
+          ports:
+            - containerPort: 80
+            - containerPort: 9010
+          env:
+            - name: KBC_DATADIR
+              value: /data
+            - name: KBC_RUNID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keras
+  namespace: keras
+spec:
+  selector:
+    app: keras
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: dashboard
+      protocol: TCP
+      port: 9010
+      targetPort: 9010
+  type: ClusterIP
