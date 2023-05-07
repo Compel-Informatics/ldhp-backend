@@ -3,8 +3,8 @@
 # Pass-ID:     X9448776
 # Author:      Atakan Çetinkaya
 # Created:     04.05.2023
-# Description: This .YAML (keboola.yaml) File is explaining how to setup the Keras on K8s-Cluster
-# File Name:   keboola.yaml
+# Description: This .YAML (keras.yaml) File is explaining how to Deploy Keras on the K8s-Cluster
+# File Name:   keras.yaml
 # Version: v1.0
 # =======================================================================================================================================
 apiVersion: v1
