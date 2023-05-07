@@ -174,17 +174,13 @@ On this space you will find a list of resources which can be helpful.
 - [Grafana](https://devopscube.com/setup-grafana-kubernetes/)
 - [ArgoCD](https://argo-cd.readthedocs.io/en/stable/getting_started/)
 - [Jupyter](https://jupyter-notebook.readthedocs.io/en/stable/public_server.html)
-
 - [Meltano](https://meltano.com/)
 - [Keboola](https://help.keboola.com/)
 - [Stitch](https://www.stitchdata.com/)
-
 - [TensorFlow](https://www.tensorflow.org/tutorials/quickstart/beginner)
 - [PyTorch](https://pytorch.org/)
 - [Keras](https://keras.io/)
 - [scikit-learn](https://scikit-learn.org/stable/)
-
--
 - [Kubeflow](https://www.kubeflow.org/docs/components/pipelines/v1/installation/standalone-deployment/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
