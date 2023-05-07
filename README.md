@@ -30,7 +30,7 @@
     <a href="https://github.com/Compel-Informatics/ldhp-backend"><strong>ldhp-backend»</strong></a>
     <br />
     <br />
-    <a href="https://github.com/Compel-Informatics/ldhp-backend">ldhp-frontend</a>
+    <a href="https://github.com/Compel-Informatics/ldhp-frontend">ldhp-frontend</a>
     ·
     <a href="https://github.com/Compel-Informatics/ldhp-documents">ldhp-documents</a>
   </p>
@@ -49,7 +49,11 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#priority-components">Priority components</a></li>
+        <li><a href="#extended-components">Extended components</a></li>
+        <li><a href="#data-services">Data Services</a></li>
+        <li><a href="#ml-services">ML Services</a></li>
+        <li><a href="#application-services">Application Services</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -92,51 +96,51 @@ Now you are able to click on one of these links, which direct you directly into 
 ### Priority components
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="K8s-Cluster">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/blob/main/k8s_cluster/k8s-cluster-setup.md" alt="K8s-Cluster">
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="K8s-Dashboard">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/blob/main/k8s_dashboard/k8s-dashboard.md" alt="K8s-Dashboard">
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="Grafana-Dashboard">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/blob/main/grafana-dashboard/grafana-dashboard.md" alt="Grafana-Dashboard">
 
 ### Extended components
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="ArgoCD-Dashboard">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/blob/main/argocd-dashboard/argocd-dashboard.md" alt="ArgoCD-Dashboard">
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="Jupyter-Notebook">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/blob/main/jupyter_notebook/jupyter_notebook.md" alt="Jupyter-Notebook">
 
 ### Data Services
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="Meltano">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/tree/main/meltano" alt="Meltano">
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="Keboola">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/blob/main/keboola/keboola.md" alt="Keboola">
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="Stitch">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/blob/main/stitch/stitch.md" alt="Stitch">
 
 ### ML Services
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="Tensorflow">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/blob/main/tensorflow/tensorflow.md" alt="Tensorflow">
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="PyTorch">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/blob/main/pytorch/pytorch.md" alt="PyTorch">
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="Keras">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/blob/main/keras/keras.md" alt="Keras">
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="SciKit-Learn">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/blob/main/scikit_learn/scikit_learn.md" alt="scikit-learn">
 
 ### Application Services
 
 - LDHP-Backend
-  <img src="https://github.com/Compel-Informatics/ldhp-backend" alt="Kubeflow">
+  <img src="https://github.com/Compel-Informatics/ldhp-backend/blob/main/kubeflow/kubeflow.md" alt="Kubeflow">
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -164,9 +168,24 @@ Project Link: [https://github.com/Compel-Informatics/ldhp-backend](https://githu
 
 On this space you will find a list of resources which can be helpful.
 
-- [CSS](https://www.w3schools.com/css/default.asp)
-- [Javascript](https://www.w3schools.com/js/)
-- [Html](https://www.w3schools.com/html/default.asp)
+- [YAML](https://www.w3schools.com/css/default.asp)
+- [Python](https://yaml.org/)
+- [Kubernetes](https://kubernetes.io/docs/home/)
+- [Grafana](https://devopscube.com/setup-grafana-kubernetes/)
+- [ArgoCD](https://argo-cd.readthedocs.io/en/stable/getting_started/)
+- [Jupyter](https://jupyter-notebook.readthedocs.io/en/stable/public_server.html)
+
+- [Meltano](https://meltano.com/)
+- [Keboola](https://help.keboola.com/)
+- [Stitch](https://www.stitchdata.com/)
+
+- [TensorFlow](https://www.tensorflow.org/tutorials/quickstart/beginner)
+- [PyTorch](https://pytorch.org/)
+- [Keras](https://keras.io/)
+- [scikit-learn](https://scikit-learn.org/stable/)
+
+-
+- [Kubeflow](https://www.kubeflow.org/docs/components/pipelines/v1/installation/standalone-deployment/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

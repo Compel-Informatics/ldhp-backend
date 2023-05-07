@@ -6,7 +6,7 @@
 
 #### Created: 04.05.2023
 
-#### Description: This .md (tensorflow.md) File is explaining how to setup the Tensorflow on the K8s-Cluster
+#### Description: This .md (tensorflow.md) File is explaining how to setup the TensorFlow on the K8s-Cluster
 
 #### File Name: tensorflow.md
 
