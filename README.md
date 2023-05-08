@@ -27,7 +27,7 @@
   <p align="center">
     (Lightweight-Data Hub Plattform)
     <br />
-    <a href="https://github.com/Compel-Informatics/ldhp-backend"><strong>ldhp-backend»</strong></a>
+    <a href="https://github.com/Compel-Informatics/ldhp-backend/blob/main/README.md"><strong>ldhp-backend»</strong></a>
     <br />
     <br />
     <a href="https://github.com/Compel-Informatics/ldhp-frontend">ldhp-frontend</a>
