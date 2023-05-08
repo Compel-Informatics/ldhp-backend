@@ -157,7 +157,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 4.0) The Tigera Operator is a Kubernetes operator that simplifies the deployment and management of the Calico network security and
 connectivity solution in Kubernetes clusters, enabling you to secure and connect your applications with ease.
 
-## NOTE: Execute both command's - "MASTER NODE"
+NOTE: Execute both command's - "MASTER NODE"
 
 ```sh
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/tigera-operator.yaml
